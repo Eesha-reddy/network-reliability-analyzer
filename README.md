@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# 🔗 Network Reliability Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A visual and interactive React-based web app to **analyze and visualize network reliability** using fundamental graph theory concepts such as **Articulation Points** and **Bridges**.
 
-## Available Scripts
+This project is built to help users explore and understand **critical components of undirected graphs** using an intuitive **adjacency matrix input** and beautiful **SVG-based visualizations**.
 
-In the project directory, you can run:
+---
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 🔢 Dynamic input for number of nodes (2–20)
+- 🧮 Editable adjacency matrix with auto-symmetric filling
+- 📊 Real-time analysis on button click
+  - Detect **Articulation Points** (critical nodes)
+  - Detect **Bridges** (critical edges)
+- 🎨 Clean and responsive circular graph layout
+  - **Red nodes**: Articulation Points
+  - **Blue edges**: Bridges
+  - **Gray nodes / Black edges**: Regular
+- 🌈 Aesthetic gradient background and SVG styling
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tech Stack
 
-### `npm run build`
+| Area               | Technology           |
+|--------------------|----------------------|
+| Frontend Framework | React.js             |
+| Styling            | CSS (Custom + Flex)  |
+| Visualization      | Pure SVG             |
+| Algorithms         | Tarjan’s (DFS-based) |
+| Interactivity      | React State & Hooks  |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ⚙️ Algorithm Details
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📍 Articulation Points (Cut Vertices)
 
-### `npm run eject`
+- An **articulation point** is a vertex that, if removed, increases the number of connected components.
+- **Tarjan's Algorithm** is used via **Depth First Search (DFS)**:
+  - Maintains:
+    - `disc[]`: discovery time of each node
+    - `low[]`: lowest discovery time reachable
+  - For each unvisited node:
+    - Run DFS recursively
+    - If a node `u` has a child `v` such that `low[v] ≥ disc[u]`, then `u` is an articulation point
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔗 Bridges (Cut Edges)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- A **bridge** is an edge which, if removed, increases the number of connected components.
+- During DFS:
+  - If `low[v] > disc[u]` for a child `v` of `u`, then edge `(u,v)` is a bridge.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Both these concepts are implemented in pure **JavaScript** inside a dedicated utility file (`GraphAnalyzer.js`).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🧮 Frontend Workflow
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Input Stage**
+   - User enters number of nodes (say `n = 5`)
+   - App generates an editable `n x n` adjacency matrix
+   - Self-loops are disabled
+   - Matrix is kept symmetric (undirected graph)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Analysis Stage**
+   - On clicking `Analyze Graph`, adjacency matrix is converted to an adjacency list
+   - `analyzeGraph()` function is invoked using DFS to extract:
+     - `articulationPoints[]`
+     - `bridges[]`
 
-### Code Splitting
+3. **Visualization Stage**
+   - All nodes are arranged in a **circular layout** using trigonometry
+   - Edges are drawn as **straight SVG lines**
+   - Styles applied:
+     - 🔴 Red circles for articulation points
+     - 🔵 Blue lines for bridges
+     - ⚪ Pastel-colored circles for regular nodes
+     - ⚫ Black lines for regular edges
+   - Responsive layout with central alignment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
